@@ -1,0 +1,10 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1024" height="1024" fill="#22C55E"/>
+  <text x="512" y="512" font-family="Arial, sans-serif" font-size="64" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="middle">
+    BOND
+  </text>
+  <text x="512" y="600" font-family="Arial, sans-serif" font-size="48" fill="white" text-anchor="middle" dominant-baseline="middle">
+    YIELD
+  </text>
+  <circle cx="512" cy="512" r="480" fill="none" stroke="white" stroke-width="8"/>
+</svg>
