@@ -1,15 +1,10 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { colors } from '../theme/colors';
 import { BondInput } from '../types/bond';
 import { calculateBondMetrics, formatCurrency, formatPercentage } from '../utils/bondCalculations';
+import { ScreenContainer, Card, MetricCard, Button } from '../components';
 
 export default function ResultScreen() {
   const params = useLocalSearchParams();
@@ -47,11 +42,12 @@ export default function ResultScreen() {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.card}>
+    <ScreenContainer>
+      <Card>
         <Text style={styles.title}>Calculation Results</Text>
         
         <View style={styles.summarySection}>
+          <Text style={styles.summaryTitle}>Bond Summary</Text>
           <View style={styles.summaryRow}>
             <Text style={styles.summaryLabel}>Face Value</Text>
             <Text style={styles.summaryValue}>{formatCurrency(inputs.faceValue)}</Text>
@@ -73,68 +69,51 @@ export default function ResultScreen() {
         <View style={styles.resultsSection}>
           <Text style={styles.sectionTitle}>Yield Metrics</Text>
           
-          <View style={styles.metricCard}>
-            <Text style={styles.metricLabel}>Annual Coupon</Text>
-            <Text style={styles.metricValue}>{formatCurrency(results.annualCoupon)}</Text>
-          </View>
+          <MetricCard
+            label="Annual Coupon"
+            value={formatCurrency(results.annualCoupon)}
+          />
 
-          <View style={styles.metricCard}>
-            <Text style={styles.metricLabel}>Current Yield</Text>
-            <Text style={styles.metricValue}>{formatPercentage(results.currentYield)}</Text>
-          </View>
+          <MetricCard
+            label="Current Yield"
+            value={formatPercentage(results.currentYield)}
+          />
 
-          <View style={styles.metricCard}>
-            <Text style={styles.metricLabel}>Yield to Maturity (YTM)</Text>
-            <Text style={styles.metricValue}>{formatPercentage(results.yieldToMaturity)}</Text>
-          </View>
+          <MetricCard
+            label="Yield to Maturity (YTM)"
+            value={formatPercentage(results.yieldToMaturity)}
+          />
 
-          <View style={styles.metricCard}>
-            <Text style={styles.metricLabel}>Total Interest Earned</Text>
-            <Text style={styles.metricValue}>{formatCurrency(results.totalInterest)}</Text>
-          </View>
+          <MetricCard
+            label="Total Interest Earned"
+            value={formatCurrency(results.totalInterest)}
+          />
 
-          <View style={styles.metricCard}>
-            <Text style={styles.metricLabel}>Bond Status</Text>
-            <Text style={[styles.metricValue, { color: getPremiumDiscountColor() }]}>
-              {getPremiumDiscountText()}
-            </Text>
-          </View>
+          <MetricCard
+            label="Bond Status"
+            value={getPremiumDiscountText()}
+            valueColor={getPremiumDiscountColor()}
+          />
         </View>
 
-        <TouchableOpacity
-          style={styles.cashFlowButton}
+        <Button
+          title="View Cash Flow Schedule"
           onPress={() => router.push({ pathname: '/cashflow', params: params as any })}
-        >
-          <Text style={styles.cashFlowButtonText}>View Cash Flow Schedule</Text>
-        </TouchableOpacity>
+          style={styles.cashFlowButton}
+        />
 
-        <TouchableOpacity
-          style={styles.backButton}
+        <Button
+          title="Back to Calculator"
           onPress={() => router.back()}
-        >
-          <Text style={styles.backButtonText}>Back to Calculator</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+          variant="outline"
+          style={styles.backButton}
+        />
+      </Card>
+    </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  card: {
-    margin: 20,
-    padding: 24,
-    backgroundColor: colors.card,
-    borderRadius: 16,
-    shadowColor: colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -147,6 +126,12 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 12,
     marginBottom: 24,
+  },
+  summaryTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: colors.text,
+    marginBottom: 12,
   },
   summaryRow: {
     flexDirection: 'row',
@@ -172,51 +157,10 @@ const styles = StyleSheet.create({
     color: colors.text,
     marginBottom: 16,
   },
-  metricCard: {
-    backgroundColor: colors.surface,
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 12,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  metricLabel: {
-    fontSize: 16,
-    color: colors.textSecondary,
-    fontWeight: '500',
-    flex: 1,
-  },
-  metricValue: {
-    fontSize: 16,
-    color: colors.text,
-    fontWeight: 'bold',
-    flex: 1,
-    textAlign: 'right',
-  },
   cashFlowButton: {
-    backgroundColor: colors.primary,
-    padding: 18,
-    borderRadius: 12,
-    alignItems: 'center',
     marginBottom: 12,
-  },
-  cashFlowButtonText: {
-    color: colors.background,
-    fontSize: 16,
-    fontWeight: 'bold',
   },
   backButton: {
-    backgroundColor: 'transparent',
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: 18,
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  backButtonText: {
-    color: colors.textSecondary,
-    fontSize: 16,
-    fontWeight: '600',
+    marginBottom: 10,
   },
 });

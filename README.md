@@ -4,15 +4,17 @@ A production-ready mobile app for calculating bond yields and cash flow schedule
 
 ## Features
 
+- **Onboarding Experience**: Interactive introduction to the app's features with swipeable slides
 - **Input Form**: Enter bond details including face value, coupon rate, market price, maturity, and frequency
 - **Yield Calculations**: Calculate current yield, yield to maturity (YTM), and total interest
 - **Premium/Discount Analysis**: Shows if bond is trading at premium, discount, or at par
 - **Cash Flow Schedule**: Generate detailed payment schedule with dates and cumulative interest
-- **Clean UI**: Modern fintech-style interface with light green theme
+- **Clean UI**: Modern fintech-style interface with light green theme and reusable components
+- **Persistent State**: Remembers onboarding completion for better user experience
 
 ## Tech Stack
 
-- **Expo SDK 51** - Latest version
+- **Expo SDK 54** - Latest version
 - **Expo Router** - File-based routing
 - **TypeScript** - Type safety
 - **React Native** - Cross-platform mobile development
@@ -49,13 +51,22 @@ npm run web
 ```
 bond-yield-calculator/
 ├── app/                    # App screens and routing
-│   ├── _layout.tsx        # Root layout with navigation
+│   ├── _layout.tsx        # Root layout with navigation and onboarding logic
 │   ├── index.tsx          # Home screen with input form
 │   ├── result.tsx         # Results screen
-│   └── cashflow.tsx       # Cash flow schedule
-├── components/            # Reusable components (empty)
+│   ├── cashflow.tsx       # Cash flow schedule
+│   └── onboarding.tsx     # Interactive onboarding screen
+├── components/            # Reusable UI components
+│   ├── Button.tsx         # Custom button component
+│   ├── Card.tsx           # Card container component
+│   ├── FormField.tsx      # Input field with label
+│   ├── FrequencySelector.tsx # Payment frequency selector
+│   ├── MetricCard.tsx     # Display card for metrics
+│   ├── ScreenContainer.tsx # Screen wrapper with safe area
+│   └── index.ts           # Component exports
 ├── utils/                  # Utility functions
-│   └── bondCalculations.ts # Bond calculation logic
+│   ├── bondCalculations.ts # Bond calculation logic
+│   └── storage.ts         # Local storage utilities
 ├── types/                  # TypeScript type definitions
 │   └── bond.ts            # Bond-related types
 ├── theme/                  # App theming
@@ -80,18 +91,21 @@ The app uses standard bond calculation formulas:
 
 ## Screens
 
-1. **Home Screen** - Input form for bond parameters
-2. **Result Screen** - Displays calculated yields and metrics
-3. **Cash Flow Screen** - Shows payment schedule with FlatList table
+1. **Onboarding Screen** - Interactive introduction with swipeable slides showcasing app features
+2. **Home Screen** - Input form for bond parameters
+3. **Result Screen** - Displays calculated yields and metrics
+4. **Cash Flow Screen** - Shows payment schedule with FlatList table
 
 ## Development
 
 This app is built with:
 - Strong TypeScript typing
 - Separated business logic in utilities
-- Clean component architecture
+- Clean component architecture with reusable UI components
 - Modern React Native patterns
 - Expo Router for navigation
+- Local storage for user preferences
+- Interactive onboarding experience
 
 ## License
 

@@ -1,15 +1,10 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { colors } from '../theme/colors';
 import { BondInput, CashFlowItem } from '../types/bond';
 import { generateCashFlowSchedule, formatCurrency } from '../utils/bondCalculations';
+import { ScreenContainer, Card, Button } from '../components';
 
 export default function CashFlowScreen() {
   const params = useLocalSearchParams();
@@ -65,8 +60,8 @@ export default function CashFlowScreen() {
   );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.card}>
+    <ScreenContainer>
+      <Card style={styles.card}>
         <Text style={styles.title}>Cash Flow Schedule</Text>
         
         <View style={styles.summarySection}>
@@ -100,32 +95,18 @@ export default function CashFlowScreen() {
           />
         </View>
 
-        <TouchableOpacity
-          style={styles.backButton}
+        <Button
+          title="Back to Results"
           onPress={() => router.back()}
-        >
-          <Text style={styles.backButtonText}>Back to Results</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+          style={styles.backButton}
+        />
+      </Card>
+    </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
   card: {
-    margin: 20,
-    padding: 24,
-    backgroundColor: colors.card,
-    borderRadius: 16,
-    shadowColor: colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
     flex: 1,
   },
   title: {
@@ -206,14 +187,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   backButton: {
-    backgroundColor: colors.primary,
-    padding: 18,
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  backButtonText: {
-    color: colors.background,
-    fontSize: 16,
-    fontWeight: 'bold',
+    marginBottom: 10,
   },
 });
