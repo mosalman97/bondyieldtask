@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { colors } from '../theme/colors';
 
@@ -10,9 +10,10 @@ interface FormFieldProps {
   keyboardType?: 'default' | 'numeric' | 'email-address' | 'phone-pad';
   multiline?: boolean;
   numberOfLines?: number;
+  returnKeyType?: 'done' | 'go' | 'next' | 'search' | 'send';
 }
 
-export function FormField({
+export const FormField = forwardRef<any, FormFieldProps>(({
   label,
   value,
   onChangeText,
@@ -20,11 +21,12 @@ export function FormField({
   keyboardType = 'default',
   multiline = false,
   numberOfLines = 1,
-}: FormFieldProps) {
+}: FormFieldProps, ref) => {
   return (
     <View style={styles.inputGroup}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
+        ref={ref}
         style={[styles.input, multiline && styles.multilineInput]}
         value={value}
         onChangeText={onChangeText}
@@ -35,7 +37,7 @@ export function FormField({
       />
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   inputGroup: {

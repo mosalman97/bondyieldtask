@@ -43,7 +43,6 @@ npm start
 # Run on specific platforms
 npm run android
 npm run ios
-npm run web
 ```
 
 ## Project Structure

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { colors } from '../theme/colors';
 import { BondInput } from '../types/bond';
@@ -43,77 +43,86 @@ export default function ResultScreen() {
 
   return (
     <ScreenContainer>
-      <Card>
-        <Text style={styles.title}>Calculation Results</Text>
-        
-        <View style={styles.summarySection}>
-          <Text style={styles.summaryTitle}>Bond Summary</Text>
-          <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Face Value</Text>
-            <Text style={styles.summaryValue}>{formatCurrency(inputs.faceValue)}</Text>
-          </View>
-          <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Market Price</Text>
-            <Text style={styles.summaryValue}>{formatCurrency(inputs.marketPrice)}</Text>
-          </View>
-          <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Coupon Rate</Text>
-            <Text style={styles.summaryValue}>{inputs.annualCouponRate}%</Text>
-          </View>
-          <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Years to Maturity</Text>
-            <Text style={styles.summaryValue}>{inputs.yearsToMaturity}</Text>
-          </View>
-        </View>
-
-        <View style={styles.resultsSection}>
-          <Text style={styles.sectionTitle}>Yield Metrics</Text>
+      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
+        <Card>
+          <Text style={styles.title}>Calculation Results</Text>
           
-          <MetricCard
-            label="Annual Coupon"
-            value={formatCurrency(results.annualCoupon)}
+          <View style={styles.summarySection}>
+            <Text style={styles.summaryTitle}>Bond Summary</Text>
+            <View style={styles.summaryRow}>
+              <Text style={styles.summaryLabel}>Face Value</Text>
+              <Text style={styles.summaryValue}>{formatCurrency(inputs.faceValue)}</Text>
+            </View>
+            <View style={styles.summaryRow}>
+              <Text style={styles.summaryLabel}>Market Price</Text>
+              <Text style={styles.summaryValue}>{formatCurrency(inputs.marketPrice)}</Text>
+            </View>
+            <View style={styles.summaryRow}>
+              <Text style={styles.summaryLabel}>Coupon Rate</Text>
+              <Text style={styles.summaryValue}>{inputs.annualCouponRate}%</Text>
+            </View>
+            <View style={styles.summaryRow}>
+              <Text style={styles.summaryLabel}>Years to Maturity</Text>
+              <Text style={styles.summaryValue}>{inputs.yearsToMaturity}</Text>
+            </View>
+          </View>
+
+          <View style={styles.resultsSection}>
+            <Text style={styles.sectionTitle}>Yield Metrics</Text>
+            
+            <MetricCard
+              label="Annual Coupon"
+              value={formatCurrency(results.annualCoupon)}
+            />
+
+            <MetricCard
+              label="Current Yield"
+              value={formatPercentage(results.currentYield)}
+            />
+
+            <MetricCard
+              label="Yield to Maturity (YTM)"
+              value={formatPercentage(results.yieldToMaturity)}
+            />
+
+            <MetricCard
+              label="Total Interest Earned"
+              value={formatCurrency(results.totalInterest)}
+            />
+
+            <MetricCard
+              label="Bond Status"
+              value={getPremiumDiscountText()}
+              valueColor={getPremiumDiscountColor()}
+            />
+          </View>
+
+          <Button
+            title="View Cash Flow Schedule"
+            onPress={() => router.push({ pathname: '/cashflow', params: params as any })}
+            style={styles.cashFlowButton}
           />
 
-          <MetricCard
-            label="Current Yield"
-            value={formatPercentage(results.currentYield)}
+          <Button
+            title="Back to Calculator"
+            onPress={() => router.back()}
+            variant="outline"
+            style={styles.backButton}
           />
-
-          <MetricCard
-            label="Yield to Maturity (YTM)"
-            value={formatPercentage(results.yieldToMaturity)}
-          />
-
-          <MetricCard
-            label="Total Interest Earned"
-            value={formatCurrency(results.totalInterest)}
-          />
-
-          <MetricCard
-            label="Bond Status"
-            value={getPremiumDiscountText()}
-            valueColor={getPremiumDiscountColor()}
-          />
-        </View>
-
-        <Button
-          title="View Cash Flow Schedule"
-          onPress={() => router.push({ pathname: '/cashflow', params: params as any })}
-          style={styles.cashFlowButton}
-        />
-
-        <Button
-          title="Back to Calculator"
-          onPress={() => router.back()}
-          variant="outline"
-          style={styles.backButton}
-        />
-      </Card>
+        </Card>
+      </ScrollView>
     </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    padding: 16,
+    flexGrow: 1,
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',

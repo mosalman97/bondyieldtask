@@ -1,26 +1,24 @@
 import React from 'react';
-import { View, ScrollView, StyleSheet, ViewStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle } from 'react-native';
 import { colors } from '../theme/colors';
 
 interface ScreenContainerProps {
   children: React.ReactNode;
-  scrollable?: boolean;
   style?: ViewStyle;
 }
 
-export function ScreenContainer({ children, scrollable = true, style }: ScreenContainerProps) {
-  const Container = scrollable ? ScrollView : View;
+export function ScreenContainer({ children, style }: ScreenContainerProps) {
   
   return (
-    <Container style={[styles.container, style]}>
+    <View style={[styles.container, style]}>
       {children}
-    </Container>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.background
   },
 });

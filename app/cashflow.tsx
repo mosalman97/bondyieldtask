@@ -5,6 +5,7 @@ import { colors } from '../theme/colors';
 import { BondInput, CashFlowItem } from '../types/bond';
 import { generateCashFlowSchedule, formatCurrency } from '../utils/bondCalculations';
 import { ScreenContainer, Card, Button } from '../components';
+  import { ScrollView } from 'react-native-virtualized-view';
 
 export default function CashFlowScreen() {
   const params = useLocalSearchParams();
@@ -42,7 +43,7 @@ export default function CashFlowScreen() {
   const renderHeader = () => (
     <View style={styles.header}>
       <View style={styles.headerCell}>
-        <Text style={styles.headerText}>Period</Text>
+        <Text style={styles.headerText}>Periods</Text>
       </View>
       <View style={styles.headerCell}>
         <Text style={styles.headerText}>Payment Date</Text>
@@ -61,51 +62,60 @@ export default function CashFlowScreen() {
 
   return (
     <ScreenContainer>
-      <Card style={styles.card}>
-        <Text style={styles.title}>Cash Flow Schedule</Text>
-        
-        <View style={styles.summarySection}>
-          <Text style={styles.summaryTitle}>Bond Summary</Text>
-          <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Face Value:</Text>
-            <Text style={styles.summaryValue}>{formatCurrency(inputs.faceValue)}</Text>
+      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
+        <Card style={styles.card}>
+          <Text style={styles.title}>Cash Flow Schedule</Text>
+          
+          <View style={styles.summarySection}>
+            <Text style={styles.summaryTitle}>Bond Summary</Text>
+            <View style={styles.summaryRow}>
+              <Text style={styles.summaryLabel}>Face Value:</Text>
+              <Text style={styles.summaryValue}>{formatCurrency(inputs.faceValue)}</Text>
+            </View>
+            <View style={styles.summaryRow}>
+              <Text style={styles.summaryLabel}>Coupon Rate:</Text>
+              <Text style={styles.summaryValue}>{inputs.annualCouponRate}%</Text>
+            </View>
+            <View style={styles.summaryRow}>
+              <Text style={styles.summaryLabel}>Frequency:</Text>
+              <Text style={styles.summaryValue}>{inputs.couponFrequency === 'annual' ? 'Annual' : 'Semi-Annual'}</Text>
+            </View>
+            <View style={styles.summaryRow}>
+              <Text style={styles.summaryLabel}>Total Periods:</Text>
+              <Text style={styles.summaryValue}>{cashFlowSchedule.length}</Text>
+            </View>
           </View>
-          <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Coupon Rate:</Text>
-            <Text style={styles.summaryValue}>{inputs.annualCouponRate}%</Text>
-          </View>
-          <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Frequency:</Text>
-            <Text style={styles.summaryValue}>{inputs.couponFrequency === 'annual' ? 'Annual' : 'Semi-Annual'}</Text>
-          </View>
-          <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Total Periods:</Text>
-            <Text style={styles.summaryValue}>{cashFlowSchedule.length}</Text>
-          </View>
-        </View>
 
-        <View style={styles.tableContainer}>
-          {renderHeader()}
-          <FlatList
-            data={cashFlowSchedule}
-            renderItem={renderCashFlowItem}
-            keyExtractor={(item) => item.period.toString()}
-            style={styles.list}
-            showsVerticalScrollIndicator={false}
+          <View style={styles.tableContainer}>
+            {renderHeader()}
+            <FlatList
+              data={cashFlowSchedule}
+              renderItem={renderCashFlowItem}
+              keyExtractor={(item) => item.period.toString()}
+              style={styles.list}
+              showsVerticalScrollIndicator={false}
+            />
+          </View>
+
+          <Button
+            title="Back to Results"
+            onPress={() => router.back()}
+            style={styles.backButton}
           />
-        </View>
-
-        <Button
-          title="Back to Results"
-          onPress={() => router.back()}
-          style={styles.backButton}
-        />
-      </Card>
-    </ScreenContainer>
+        </Card>
+      </ScrollView>
+     </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    padding: 16,
+    flexGrow: 1,
+  },
   card: {
     flex: 1,
   },
